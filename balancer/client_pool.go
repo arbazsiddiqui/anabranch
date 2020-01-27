@@ -20,7 +20,7 @@ type clientPool struct {
 }
 
 //NewClientPool creates a new client pool
-func NewClientPool(hosts []string, strategy string, healthCheckInterval int, addRequestId bool) *clientPool {
+func NewClientPool(hosts []string, strategy string, healthCheckInterval int, addRequestId bool, healthCheckType string) *clientPool {
 	var clients []*client
 	for _, host := range hosts {
 		clients = append(clients, NewClient(host))
@@ -31,6 +31,7 @@ func NewClientPool(hosts []string, strategy string, healthCheckInterval int, add
 		healthCheckInterval: healthCheckInterval,
 		currentReqClient:    0,
 		addRequestId:        addRequestId,
+		healthCheckType:     healthCheckType,
 	}
 }
 

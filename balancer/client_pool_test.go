@@ -11,7 +11,7 @@ func TestClientPool_RoundRobin_GetAvailableClient(t *testing.T) {
 		"http://localhost:8081",
 		"http://localhost:8082",
 	}
-	testPool := NewClientPool(hosts, "roundRobin", 5, false)
+	testPool := NewClientPool(hosts, "roundRobin", 5, false, "none")
 
 	req1, _ := testPool.GetAvailableClient()
 	if req1.host != "http://localhost:8080" {
@@ -46,7 +46,7 @@ func TestClientPool_LeastConnection_GetAvailableClient(t *testing.T) {
 		"http://localhost:8081",
 		"http://localhost:8082",
 	}
-	testPool := NewClientPool(hosts, "leastConnections", 5, false)
+	testPool := NewClientPool(hosts, "leastConnections", 5, false, "none")
 
 	testPool.cp[0].requestCount = 5
 	testPool.cp[1].requestCount = 3
@@ -65,7 +65,7 @@ func TestClientPool_RoundRobin_GetAvailableClient_WithDeadClients(t *testing.T) 
 		"http://localhost:8081",
 		"http://localhost:8082",
 	}
-	testPool := NewClientPool(hosts, "roundRobin", 5, false)
+	testPool := NewClientPool(hosts, "roundRobin", 5, false, "none")
 
 	req1, _ := testPool.GetAvailableClient()
 	if req1.host != "http://localhost:8080" {

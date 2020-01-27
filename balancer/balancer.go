@@ -12,7 +12,7 @@ type lb struct {
 
 //NewLoadBalancer : Creates a new LoadBalancer
 func NewLoadBalancer(hosts []string, strategy string, healthCheckInterval int, healthCheckType string, addRequestId bool) *lb {
-	cp := NewClientPool(hosts, strategy, healthCheckInterval, addRequestId)
+	cp := NewClientPool(hosts, strategy, healthCheckInterval, addRequestId, healthCheckType)
 	lb := &lb{
 		cp: cp,
 	}
