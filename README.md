@@ -26,7 +26,7 @@
 The port to the run the load balancer on.
 
 ### hosts
-A list of hosts we want to forwards requests to.
+A list of hosts we want to forward requests to.
 
 ### strategy
 Algorithm for load balancing. Can be `roundRobin` or `leastConnections`.
