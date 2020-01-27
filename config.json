@@ -1,0 +1,12 @@
+{
+  "port": 9002,
+  "hosts": [
+    "http://localhost:8080",
+    "http://localhost:8081",
+    "http://localhost:8082"
+  ],
+  "strategy" : "roundRobin",
+  "health_check_interval" : 5,
+  "add_request_id" : true,
+  "healthCheckType" : "passive"
+}
