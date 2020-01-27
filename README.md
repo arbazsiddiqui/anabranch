@@ -16,7 +16,7 @@
 ## Usage
 1) Clone the repo using `git clone git@github.com:arbazsiddiqui/anabranch.git && cd anabranch`
 2) Use the existing binary `anabranch` or build a new one using `go build`
-3) Change the existing config to your needs to create a new one.
+3) Change the existing config to your needs or create a new one.
 4) Run the load balancer using `./anabranch -config=./config.json`
 
 
