@@ -1,7 +1,7 @@
 # anabranch
 [![Go Report Card](https://goreportcard.com/badge/github.com/arbazsiddiqui/anabranch)](https://goreportcard.com/report/github.com/arbazsiddiqui/anabranch)
 
-A simple HTTP load balancer and reverse proxy written in Go.
+> A simple HTTP load balancer and reverse proxy written in Go.
 
 ## Features
 * Round Robin
