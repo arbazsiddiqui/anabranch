@@ -15,9 +15,10 @@ type clientPool struct {
 	currentReqClient    uint64
 	healthCheckInterval int
 	addRequestId        bool
-	healthCheckType string
+	healthCheckType     string
 }
 
+//Creates a new client pool
 func NewClientPool(hosts []string, strategy string, healthCheckInterval int, addRequestId bool) *clientPool {
 	var clients []*client
 	for _, host := range hosts {
@@ -28,12 +29,12 @@ func NewClientPool(hosts []string, strategy string, healthCheckInterval int, add
 		strategy:            strategy,
 		healthCheckInterval: healthCheckInterval,
 		currentReqClient:    0,
-		addRequestId: addRequestId,
+		addRequestId:        addRequestId,
 	}
 }
 
 func (clientPool *clientPool) GetAvailableClient() (*client, error) {
-	
+
 	if clientPool.strategy == "roundRobin" {
 		var nextClient *client
 		var circularLength = len(clientPool.cp) + int(clientPool.currentReqClient)
@@ -50,7 +51,7 @@ func (clientPool *clientPool) GetAvailableClient() (*client, error) {
 		}
 		return nextClient, nil
 	}
-	
+
 	if clientPool.strategy == "leastConnections" {
 		var leastConnectionClient *client
 		numberOfConnection := 100000
@@ -62,7 +63,7 @@ func (clientPool *clientPool) GetAvailableClient() (*client, error) {
 		}
 		return leastConnectionClient, nil
 	}
-	
+
 	return &client{}, errors.New("strategy not supported")
 }
 
@@ -71,12 +72,12 @@ func (clientPool *clientPool) Director(req *http.Request) {
 	atomic.AddUint64(&client.requestCount, 1)
 	log.Println(client)
 	u, _ := url.Parse(client.host)
-	
+
 	if clientPool.addRequestId {
 		guid := xid.New()
 		req.Header.Set("Request-Id", guid.String())
 	}
-	
+
 	req.URL.Scheme = u.Scheme
 	req.URL.Host = u.Host
 }
@@ -85,7 +86,7 @@ func (clientPool *clientPool) ModifyResponse(res *http.Response) error {
 	for _, c := range clientPool.cp {
 		u, _ := url.Parse(c.host)
 		if u.Host == res.Request.URL.Host {
-			atomic.AddUint64(&c.requestCount, ^uint64(c.requestCount - 1))
+			atomic.AddUint64(&c.requestCount, ^uint64(c.requestCount-1))
 			log.Println(c)
 			break
 		}

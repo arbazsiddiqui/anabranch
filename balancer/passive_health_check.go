@@ -12,7 +12,8 @@ func (clientPool *clientPool) passiveHeathCheck() {
 	}
 }
 
-func (lb *LB) StartPassiveHeathCheck() {
+//starts passive health check specified interval
+func (lb *lb) StartPassiveHeathCheck() {
 	t := time.NewTicker(time.Second * time.Duration(lb.cp.healthCheckInterval))
 	for {
 		select {

@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-type Config struct {
+type config struct {
 	Port                int      `json:"port"`
 	Hosts               []string `json:"hosts"`
 	Strategy            string   `json:"strategy"`
@@ -22,8 +22,8 @@ func main() {
 	configPath := flag.String("config", "./config.json", "path to config")
 	flag.Parse()
 	file, _ := os.Open(*configPath)
-	
-	var config Config
+
+	var config config
 	_ = json.NewDecoder(file).Decode(&config)
 	fmt.Println("Anabranch running on port :", config.Port)
 	http.ListenAndServe(fmt.Sprintf(":%v", config.Port), balancer.NewLoadBalancer(

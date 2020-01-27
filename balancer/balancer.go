@@ -4,14 +4,15 @@ import (
 	"net/http/httputil"
 )
 
-type LB struct {
+type lb struct {
 	*httputil.ReverseProxy
 	cp *clientPool
 }
 
-func NewLoadBalancer(hosts []string, strategy string, healthCheckInterval int, healthCheckType string, addRequestId bool) *LB {
+//Creates a new LoadBalancer
+func NewLoadBalancer(hosts []string, strategy string, healthCheckInterval int, healthCheckType string, addRequestId bool) *lb {
 	cp := NewClientPool(hosts, strategy, healthCheckInterval, addRequestId)
-	lb := &LB{
+	lb := &lb{
 		cp: cp,
 	}
 	lb.ReverseProxy = &httputil.ReverseProxy{
