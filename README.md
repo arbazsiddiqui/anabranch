@@ -40,6 +40,22 @@ Time interval in seconds to perform health check on hosts.
 ### add_request_id
 Boolean to add a unique request id in header of every request to downstream hosts. Header name : `Request-Id`
 
+## Sample Config
+```
+{
+  "port": 9000,
+  "hosts": [
+    "http://localhost:8080",
+    "http://localhost:8081",
+    "http://localhost:8082"
+  ],
+  "strategy" : "roundRobin",
+  "health_check_type" : "passive",
+  "health_check_interval" : 5,
+  "add_request_id" : true
+}
+```
+
 ## Todo 
 - [ ] Add support for retires 
 - [ ] More test coverage 
