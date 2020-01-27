@@ -37,9 +37,9 @@ func (clientPool *clientPool) GetAvailableClient() (*client, error) {
 		var nextClient *client
 		var circularLength = len(clientPool.cp) + int(clientPool.currentReqClient)
 		for i := int(clientPool.currentReqClient); i < circularLength; i++ {
-			idx := i % len(clientPool.cp)
-			if clientPool.cp[idx].getStatus() {
-				nextClient = clientPool.cp[idx]
+			j := i % len(clientPool.cp)
+			if clientPool.cp[j].getStatus() {
+				nextClient = clientPool.cp[j]
 				atomic.AddUint64(&clientPool.currentReqClient, 1)
 				if int(clientPool.currentReqClient) == len(clientPool.cp) { //end of hosts
 					clientPool.currentReqClient = 0
