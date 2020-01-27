@@ -15,6 +15,7 @@ type clientPool struct {
 	currentReqClient    uint64
 	healthCheckInterval int
 	addRequestId        bool
+	healthCheckType string
 }
 
 func NewClientPool(hosts []string, strategy string, healthCheckInterval int, addRequestId bool) *clientPool {
@@ -73,7 +74,7 @@ func (clientPool *clientPool) Director(req *http.Request) {
 	
 	if clientPool.addRequestId {
 		guid := xid.New()
-		req.Header.Set("X-Request-Id", guid.String())
+		req.Header.Set("Request-Id", guid.String())
 	}
 	
 	req.URL.Scheme = u.Scheme
