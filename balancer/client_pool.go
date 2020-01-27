@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 )
 
+//A pool of all hosts and other configurations
 type clientPool struct {
 	cp                  []*client
 	strategy            string
@@ -18,7 +19,7 @@ type clientPool struct {
 	healthCheckType     string
 }
 
-//Creates a new client pool
+//NewClientPool creates a new client pool
 func NewClientPool(hosts []string, strategy string, healthCheckInterval int, addRequestId bool) *clientPool {
 	var clients []*client
 	for _, host := range hosts {
@@ -33,6 +34,8 @@ func NewClientPool(hosts []string, strategy string, healthCheckInterval int, add
 	}
 }
 
+//GetAvailableClient gets a new client available to forward request to
+//based on strategy and health check
 func (clientPool *clientPool) GetAvailableClient() (*client, error) {
 
 	if clientPool.strategy == "roundRobin" {
@@ -69,10 +72,11 @@ func (clientPool *clientPool) GetAvailableClient() (*client, error) {
 
 func (clientPool *clientPool) Director(req *http.Request) {
 	client, _ := clientPool.GetAvailableClient()
+	//increment the number of request the host is serving
 	atomic.AddUint64(&client.requestCount, 1)
 	log.Println(client)
 	u, _ := url.Parse(client.host)
-
+	//add a unique xid to request-id header
 	if clientPool.addRequestId {
 		guid := xid.New()
 		req.Header.Set("Request-Id", guid.String())
@@ -86,6 +90,7 @@ func (clientPool *clientPool) ModifyResponse(res *http.Response) error {
 	for _, c := range clientPool.cp {
 		u, _ := url.Parse(c.host)
 		if u.Host == res.Request.URL.Host {
+			//decrement the number of request the host is serving
 			atomic.AddUint64(&c.requestCount, ^uint64(c.requestCount-1))
 			log.Println(c)
 			break

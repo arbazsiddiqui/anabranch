@@ -16,7 +16,7 @@ type client struct {
 
 var mutex = &sync.RWMutex{}
 
-//Creates a new client
+//NewClient creates a new client
 func NewClient(host string) *client {
 	newClient := client{
 		host:         host,

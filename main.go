@@ -26,6 +26,7 @@ func main() {
 	var config config
 	_ = json.NewDecoder(file).Decode(&config)
 	fmt.Println("Anabranch running on port :", config.Port)
+	//send the parsed config to create a new load balancer
 	http.ListenAndServe(fmt.Sprintf(":%v", config.Port), balancer.NewLoadBalancer(
 		config.Hosts,
 		config.Strategy,

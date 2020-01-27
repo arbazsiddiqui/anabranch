@@ -4,6 +4,7 @@ import (
 	"net/http/httputil"
 )
 
+//load balancer implemented on top of built in httpUtil.ReverseProxy
 type lb struct {
 	*httputil.ReverseProxy
 	cp *clientPool
@@ -16,10 +17,13 @@ func NewLoadBalancer(hosts []string, strategy string, healthCheckInterval int, h
 		cp: cp,
 	}
 	lb.ReverseProxy = &httputil.ReverseProxy{
-		Director:       cp.Director,
+		//this function is called before sending request to downstream services
+		Director: cp.Director,
+		//this function is called before sending the response back to upstream services
 		ModifyResponse: cp.ModifyResponse,
 	}
 	if healthCheckType == "passive" {
+		//starts passive health check if opted
 		go lb.StartPassiveHeathCheck()
 	}
 	return lb
