@@ -1,15 +1,9 @@
-dist: bionic
-
 language: go
-env: GO111MODULE=on GOFLAGS='-mod vendor'
+
 go:
   - 1.13.x
-git:
-  depth: 1
+
 install: true
 
-notifications:
-  email: false
 script:
-  - golangci-lint run       # run a bunch of code checkers/linters in parallel
-  - go test -v -race ./...  # Run all the tests with the race detector enabled
+  - go test -v ./balancer
