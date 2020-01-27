@@ -1,7 +1,7 @@
 package main
 
 import (
-	"anabranch/anabranch"
+	"anabranch/balancer"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -25,7 +25,8 @@ func main() {
 	
 	var config Config
 	_ = json.NewDecoder(file).Decode(&config)
-	http.ListenAndServe(fmt.Sprintf(":%v", config.Port), anabranch.NewLoadBalancer(
+	fmt.Println("Anabranch running on port :", config.Port)
+	http.ListenAndServe(fmt.Sprintf(":%v", config.Port), balancer.NewLoadBalancer(
 		config.Hosts,
 		config.Strategy,
 		config.HealthCheckInterval,

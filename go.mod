@@ -1,4 +1,4 @@
-module lb
+module anabranch
 
 go 1.13
 
